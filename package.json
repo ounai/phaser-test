@@ -1,6 +1,8 @@
 {
   "scripts": {
     "start": "webpack-dev-server --mode=development"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^4.3.0"
   }
 }
-

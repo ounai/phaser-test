@@ -1,12 +1,10 @@
-import TestScene from './scenes/TestScene';
-
 class Game extends Phaser.Game {
-  constructor() {
+  constructor(scenes) {
     super({
       type: Phaser.AUTO,
       width: 800,
       height: 600,
-      scene: [TestScene]
+      scene: scenes
     });
   }
 }

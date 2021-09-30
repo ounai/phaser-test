@@ -1,8 +1,6 @@
-import Game from './Game';
+import engineInit from '/src/engine/core/init';
 
-console.log('Initializing Phaser...');
+console.log('Initializing...');
 
-new Game();
-
-console.log('Phaser initialized!');
+engineInit();
 

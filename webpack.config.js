@@ -11,7 +11,7 @@ module.exports = {
   devServer: {
     compress: true,
     port: 9999,
-    allowedHosts: [process.env.HOST]
+    allowedHosts: [process.env.HOST ?? 'localhost']
   }
 };
 
