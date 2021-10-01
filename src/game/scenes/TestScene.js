@@ -156,7 +156,7 @@ export default class TestScene extends Scene {
   }
 
   playerJump() {
-    this.player.setVelocityY(-700);
+    if (this.player.body.touching.down) this.player.setVelocityY(-700);
   }
 
   cursorKeysDown({ up, down, left, right }) {
@@ -164,7 +164,7 @@ export default class TestScene extends Scene {
     else if (right && !left) this.playerMoveRight();
     else this.playerIdle();
 
-    if (up && this.player.body.touching.down) this.playerJump();
+    if (up) this.playerJump();
   }
 
   // Runs after scene is constructed
