@@ -1,6 +1,10 @@
 export default class Scene extends Phaser.Scene {
   baseURL = null;
   resources = null;
+  eventHandlers = null;
+
+  cursors = null;
+  #cursorKeys = null;
 
   #preloadBaseURL(baseURL) {
     if (baseURL !== null) {
@@ -26,6 +30,18 @@ export default class Scene extends Phaser.Scene {
     }
   }
 
+  #createKeyDownEventHandlers(keydown) {
+    for (const [key, listener] of Object.entries(keydown)) {
+      this.input.keyboard.on(`keydown-${key}`, listener.bind(this));
+    }
+  }
+
+  #createEventHandlers(eventHandlers) {
+    if (eventHandlers.keydown) {
+      this.#createKeyDownEventHandlers(eventHandlers.keydown);
+    }
+  }
+
   constructor(config) {
     super(config);
   }
@@ -46,8 +62,35 @@ export default class Scene extends Phaser.Scene {
     }
   }
 
+  create() {
+    if (typeof this.cursorKeysDown === 'function') {
+      this.#cursorKeys = this.input.keyboard.createCursorKeys();
+    }
+
+    if (this.eventHandlers !== null) {
+      this.#createEventHandlers(this.eventHandlers);
+    }
+
+    this.onCreate();
+  }
+
+  update(...args) {
+    if (this.#cursorKeys !== null) {
+      const { up, down, left, right } = this.#cursorKeys;
+
+      this.cursorKeysDown({
+        up: up.isDown,
+        down: down.isDown,
+        left: left.isDown,
+        right: right.isDown
+      });
+    }
+
+    this.onUpdate(...args);
+  }
+
   // Subclass methods
-  create() {}
-  update() {}
+  onCreate() {}
+  onUpdate() {}
 }
 

@@ -23,8 +23,11 @@ export default class TestScene extends Scene {
     })
   };
 
-  // Movement keys
-  cursors = null;
+  eventHandlers = {
+    keydown: {
+      'SPACE': this.playerJump
+    }
+  };
 
   // Current score
   score = 0;
@@ -134,8 +137,38 @@ export default class TestScene extends Scene {
     this.physics.add.overlap(this.player, this.stars, onCollectStar, null, this);
   }
 
+  playerMoveLeft() {
+    this.player.setVelocityX(-160);
+
+    this.player.anims.play('left', true);
+  }
+
+  playerMoveRight() {
+    this.player.setVelocityX(160);
+
+    this.player.anims.play('right', true);
+  }
+
+  playerIdle() {
+    this.player.setVelocityX(0);
+
+    this.player.anims.play('turn');
+  }
+
+  playerJump() {
+    this.player.setVelocityY(-700);
+  }
+
+  cursorKeysDown({ up, down, left, right }) {
+    if (left && !right) this.playerMoveLeft();
+    else if (right && !left) this.playerMoveRight();
+    else this.playerIdle();
+
+    if (up && this.player.body.touching.down) this.playerJump();
+  }
+
   // Runs after scene is constructed
-  create() {
+  onCreate() {
     console.log('Scene', this.constructor.name, 'create()');
 
     this.backgroundImage = new Image(this, 400, 300, this.res.sky);
@@ -146,33 +179,11 @@ export default class TestScene extends Scene {
     this.createPlayer();
     this.createScoreText();
     this.createColliders();
-
-    // TODO
-    this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   // Runs every frame
-  update(time, delta) {
-    const leftDown = this.cursors.left.isDown;
-    const rightDown = this.cursors.right.isDown;
-
-    if (leftDown && !rightDown) {
-      this.player.setVelocityX(-160);
-
-      this.player.anims.play('left', true);
-    } else if (rightDown && !leftDown) {
-      this.player.setVelocityX(160);
-
-      this.player.anims.play('right', true);
-    } else {
-      this.player.setVelocityX(0);
-
-      this.player.anims.play('turn');
-    }
-
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-700);
-    }
+  onUpdate(time, delta) {
+    // TODO cool stuff
   }
 }
 
