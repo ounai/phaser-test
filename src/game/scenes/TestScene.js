@@ -32,6 +32,7 @@ export default class TestScene extends Scene {
   // Creates scene
   constructor() {
     super({
+      autoFocus: true,
       physics: {
         default: 'arcade',
         arcade: {
@@ -123,7 +124,7 @@ export default class TestScene extends Scene {
     this.physics.add.collider(this.stars, this.platforms);
 
     const onCollectStar = (player, star) => {
-      star.disableBody(true, true);
+      star.destroy();
 
       this.score += 10;
 
